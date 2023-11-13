@@ -18,6 +18,16 @@ export class SidebarComponent {
     this.show = false
   }
 
+  public deleteList():void {
+    this.gifsService.deleteList()
+    this.show = false
+  }
+
+  public deleteTag(tag: string): void {
+    this.gifsService.deleteTag(tag)
+    this.show = false
+  }
+
   public show?: boolean
 
   public menu():void {

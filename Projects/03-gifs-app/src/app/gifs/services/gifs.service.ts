@@ -43,6 +43,25 @@ export class GifsService {
     this.searchTag(this._tagsHistory[0])
   }
 
+  deleteList(): void {
+    this._tagsHistory = []
+    this.gifList = []
+    localStorage.setItem('history', JSON.stringify(this._tagsHistory))
+  }
+
+  deleteTag(tag: string): void {
+    const position = this._tagsHistory.findIndex(object => object == tag);
+    if(this._tagsHistory.includes(tag)) {
+      this._tagsHistory = this._tagsHistory.filter( (oldTag) => oldTag !== tag)
+    }
+    localStorage.setItem('history', JSON.stringify(this._tagsHistory))
+    if (!this._tagsHistory.length) {
+      this.gifList = []
+    } else if (position == 0) {
+      this.searchTag(this._tagsHistory[0])
+    }
+  }
+
   searchTag( tag:string ):void {
     if (tag.length === 0) return;
     this.organizeHistory(tag);
