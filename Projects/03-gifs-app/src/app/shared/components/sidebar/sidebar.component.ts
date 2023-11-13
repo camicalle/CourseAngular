@@ -15,5 +15,16 @@ export class SidebarComponent {
 
   public searchTag ( tag: string ):void {
     this.gifsService.searchTag(tag)
+    this.show = false
+  }
+
+  public show?: boolean
+
+  public menu():void {
+    if (!this.show) {
+      this.show = true
+    } else {
+      this.show = false
+    }
   }
 }
