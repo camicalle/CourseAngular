@@ -11,6 +11,11 @@ import { GifsService } from '../../services/gifs.service';
       (keyup.enter)="searchTag()"
       #txtTagInput
     >
+    <ng-template [ngIf]="error">
+      <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+        {{ error }}
+      </div>
+    </ng-template>
   `
 })
 
@@ -23,8 +28,18 @@ export class SearchBoxComponent {
   constructor(private gifsService: GifsService) { }
 
   searchTag() {
+    this.validateError()
     const newTag = this.tagInput.nativeElement.value
     this.gifsService.searchTag(newTag)
     this.tagInput.nativeElement.value = '';
+  }
+
+  validateError() {
+    const newTag = this.tagInput.nativeElement.value
+    if (!newTag) {
+      this.error = 'Por favor escriba algo para iniciar la busqueda.'
+    } else  {
+      this.error = ''
+    }
   }
 }
