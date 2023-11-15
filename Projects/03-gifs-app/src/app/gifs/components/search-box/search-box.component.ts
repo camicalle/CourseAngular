@@ -30,7 +30,7 @@ export class SearchBoxComponent {
   searchTag() {
     this.validateError()
     const newTag = this.tagInput.nativeElement.value
-    this.gifsService.searchTag(newTag)
+    this.gifsService.searchTag(newTag, 0)
     this.tagInput.nativeElement.value = '';
   }
 

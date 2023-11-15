@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Gif, SearchResponse } from '../interfaces/gift.interface';
+import { Gif, Pagination, SearchResponse } from '../interfaces/gift.interface';
 
 @Injectable({ providedIn: 'root' })
 export class GifsService {
 
   public gifList: Gif[] = [];
+  public pagination!: Pagination
 
   private _tagsHistory: string[] = [];
-  private serviceUrl: string = 'http://api.giphy.com/v1/gifs';
+  private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
   private apiKey: string = 'VlZoMMiZmRl4UZ0su0ajhEGaExaR0u97';
 
   constructor( private http: HttpClient ) {
@@ -40,7 +41,7 @@ export class GifsService {
     this._tagsHistory = JSON.parse(localStorage.getItem('history')!);
 
     if (this._tagsHistory.length === 0) return;
-    this.searchTag(this._tagsHistory[0])
+    this.searchTag(this._tagsHistory[0], 0)
   }
 
   deleteList(): void {
@@ -58,22 +59,33 @@ export class GifsService {
     if (!this._tagsHistory.length) {
       this.gifList = []
     } else if (position == 0) {
-      this.searchTag(this._tagsHistory[0])
+      this.searchTag(this._tagsHistory[0], 0)
     }
   }
 
-  searchTag( tag:string ):void {
+  get limit(): number {
+    const limit = 12
+    return limit
+  }
+
+  searchTag( tag:string, page: any ):void {
     if (tag.length === 0) return;
     this.organizeHistory(tag);
+    page = page * this.limit
 
     const params = new HttpParams()
       .set('api_key', this.apiKey)
-      .set('limit', '10')
+      .set('limit', this.limit)
       .set('q', tag)
+      .set('offset', page)
+
+      console.log(page);
+
 
     this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( response => {
         this.gifList = response.data;
+        this.pagination = response.pagination
       })
     //'http://api.giphy.com/v1/gifs/search?api_key=VlZoMMiZmRl4UZ0su0ajhEGaExaR0u97&q=valorant&limit=10'
   }
