@@ -21,10 +21,9 @@ export class PaginationComponent {
     return firstTag
   }
   get pageCount() {
+    const limit = this.gifsService.limit
     const totalCount = this.gifsService.pagination.total_count;
-
-    let totalPages = Math.ceil(totalCount / this.gifsService.limit);
-
+    let totalPages = Math.ceil(totalCount / limit);
     return totalPages;
   }
   get pages(): (string | number)[] {

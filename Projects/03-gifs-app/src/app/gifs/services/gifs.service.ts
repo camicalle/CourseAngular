@@ -79,8 +79,6 @@ export class GifsService {
       .set('q', tag)
       .set('offset', page)
 
-      console.log(page);
-
 
     this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( response => {

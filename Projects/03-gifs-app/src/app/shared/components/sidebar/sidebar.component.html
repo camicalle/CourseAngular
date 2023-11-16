@@ -32,7 +32,8 @@
       <ng-container *ngFor="let tag of tags">
         <div class="d-flex border-0">
           <button
-            class="list-group-item list-group-item-action"
+            class="list-group-item list-group-item-action border-0"
+            [ngClass]="{ 'bg-secondary text-light': tag == tags[0] }"
             (click)="searchTag(tag)"
           >
             {{ tag | titlecase }}

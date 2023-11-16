@@ -4,7 +4,9 @@
     [gif]="gif"
     class="col-sm-6 col-md-4 col-xxl-3"
   ></gifs-card>
-  <shared-pagination
-    [pagination]="pagination"
-  ></shared-pagination>
+  <ng-template [ngIf]="gifs.length">
+    <shared-pagination
+      [pagination]="pagination"
+    ></shared-pagination>
+  </ng-template>
 </div>
