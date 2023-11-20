@@ -30,7 +30,9 @@ export class SearchBoxComponent {
 
     setTimeout(() => {
       this.error = this.gifsService.error;
-      this.alert(this.error)
+      if (this.error) {
+        this.alert(this.error)
+      }
     }, 200);
   }
 
