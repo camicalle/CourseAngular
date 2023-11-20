@@ -24,11 +24,17 @@ export class PaginationComponent {
   get pageCount() {
     const limit = this.gifsService.limit
     const totalCount = this.gifsService.pagination.total_count;
-    let totalPages = Math.ceil(totalCount / limit);
+    let totalPages;
+    if (totalCount > 4999) {
+      totalPages = 417
+    } else {
+      totalPages = Math.ceil(totalCount / limit);
+    }
+
     return totalPages;
   }
-  get pages(): (string | number)[] {
 
+  get pages(): (string | number)[] {
     if (this.gifsService.pagination.offset == 0 && this.gifsService.response) {
       this.currentPage = 1
     }

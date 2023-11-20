@@ -8,6 +8,7 @@ export class GifsService {
   public gifList: Gif[] = [];
   public pagination!: Pagination;
   public response!: boolean
+  public error!: string
 
   private _tagsHistory: string[] = [];
   private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
@@ -70,8 +71,12 @@ export class GifsService {
   }
 
   searchTag( tag:string, page: any ):void {
-    if (tag.length === 0) return;
-    this.organizeHistory(tag);
+    this.error = ''
+    if (tag.length === 0) {
+      this.error = 'Por favor escriba algo para iniciar la busqueda.'
+      return;
+    }
+
     page = page * this.limit
 
     const params = new HttpParams()
@@ -84,9 +89,15 @@ export class GifsService {
 
     this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( response => {
-        this.gifList = response.data;
-        this.pagination = response.pagination;
+        let responseLength = response.data.length;
         this.response = true;
+        if (!responseLength) {
+          this.error = 'No se encontraron resultados.'
+        } else {
+          this.gifList = response.data;
+          this.pagination = response.pagination;
+          this.organizeHistory(tag);
+        }
       })
   }
 
