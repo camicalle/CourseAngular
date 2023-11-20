@@ -9,9 +9,10 @@ import { GifsService } from 'src/app/gifs/services/gifs.service';
 })
 export class PaginationComponent {
 
-  constructor(private gifsService: GifsService) {}
-
   public currentPage: any = 1
+  public offset: any
+
+  constructor(private gifsService: GifsService) {}
 
   @Input()
   public pagination!: Pagination;
@@ -27,6 +28,11 @@ export class PaginationComponent {
     return totalPages;
   }
   get pages(): (string | number)[] {
+
+    if (this.gifsService.pagination.offset == 0 && this.gifsService.response) {
+      this.currentPage = 1
+    }
+
     const visiblePage = 1;
     let arrayPages: (string | number)[] = []
 

@@ -6,7 +6,8 @@ import { Gif, Pagination, SearchResponse } from '../interfaces/gift.interface';
 export class GifsService {
 
   public gifList: Gif[] = [];
-  public pagination!: Pagination
+  public pagination!: Pagination;
+  public response!: boolean
 
   private _tagsHistory: string[] = [];
   private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
@@ -79,13 +80,14 @@ export class GifsService {
       .set('q', tag)
       .set('offset', page)
 
+    this.response = false;
 
     this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( response => {
         this.gifList = response.data;
-        this.pagination = response.pagination
+        this.pagination = response.pagination;
+        this.response = true;
       })
-    //'http://api.giphy.com/v1/gifs/search?api_key=VlZoMMiZmRl4UZ0su0ajhEGaExaR0u97&q=valorant&limit=10'
   }
 
 }
